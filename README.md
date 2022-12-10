@@ -9,7 +9,13 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ## Project Notes
-**Author:** Carlos Talbot (@tusc69 on ubnt forums)
+* **Author:** Carlos Talbot (@tusc69 on ubnt forums)
+* **Author:** Robert Agbozo (@RobertTheProfessional at GitHub)
+
+Special thanks to Carlos for creating the initial repo, far from troublesome to upgrade!
+
+# Stable Tags
+* `robertagbozo/ntopng-udm:v5.5.221209-arm64`
 
 # Installing
 
@@ -18,7 +24,7 @@ This is a prebuilt image of ntopng to run directly on an UDM or UDM PRO. The Doc
 In order to install this image you will need to log into the UDM via ssh and type the following command:
 
 ```
-podman pull tusc/ntopng-udm:latest
+podman pull robertagbozo/ntopng-udm:latest
 ```
 This will download the latest image to the UDM.
 
@@ -28,8 +34,8 @@ Next, we'll need to create two directories and download config files that will b
 mkdir -p /mnt/data/ntopng/redis
 mkdir -p /mnt/data/ntopng/lib
 touch /mnt/data/ntopng/GeoIP.conf
-curl -Lo /mnt/data/ntopng/ntopng.conf https://github.com/tusc/ntopng-udm/blob/master/ntopng/ntopng.conf?raw=true
-curl -Lo /mnt/data/ntopng/redis.conf https://github.com/tusc/ntopng-udm/blob/master/ntopng/redis.conf?raw=true
+curl -Lo /mnt/data/ntopng/ntopng.conf https://github.com/RobertTheProfessional/ntopng-udm/blob/master/ntopng/ntopng.conf?raw=true
+curl -Lo /mnt/data/ntopng/redis.conf https://github.com/RobertTheProfessional/ntopng-udm/blob/master/ntopng/redis.conf?raw=true
 ```
 
 Next, we want to create a container with ntopng running on https port 3001 using this image with the above config files.
@@ -41,7 +47,7 @@ podman run -d --net=host --restart always \
    -v /mnt/data/ntopng/ntopng.conf:/etc/ntopng/ntopng.conf \
    -v /mnt/data/ntopng/redis.conf:/etc/redis/redis.conf \
    -v /mnt/data/ntopng/lib:/var/lib/ntopng \
-   docker.io/tusc/ntopng-udm:latest
+   docker.io/robertagbozo/ntopng-udm:latest
 ````
 NOTE: If you prefer to use the external drive on the UMD pro to store the persistent data you can use the following to start up ntopng. Make sure to replace all references above from /mnt/data to /mnt/data_ext:
 
@@ -52,7 +58,7 @@ podman run -d --net=host --restart always \
    -v /mnt/data_ext/ntopng/ntopng.conf:/etc/ntopng/ntopng.conf \
    -v /mnt/data_ext/ntopng/redis.conf:/etc/redis/redis.conf \
    -v /mnt/data_ext/ntopng/lib:/var/lib/ntopng \
-   docker.io/tusc/ntopng-udm:latest
+   docker.io/robertagbozo/ntopng-udm:latest
 ```
 
 Open a web browser page to your UDM's ip address with port 3001 at the end using https. For example: https://192.168.1.1:3001
@@ -87,7 +93,7 @@ You can also customize the settings for the redis database if you want to elimin
 # Disable Redis
 If you want to disable Redis and use an external server just set the env var "DISABLE_REDIS"
 ```
-docker run -e DISABLE_REDIS=true tusc/ntopng-udm
+docker run -e DISABLE_REDIS=true robertagbozo/ntopng-udm
 ```
 ## Building
 Build on your UDM or build on another device using buildx and targeting arm64
@@ -99,7 +105,7 @@ docker buildx build --platform linux/arm64 -t ntopng-udm:latest --load .
 Whenever there is a new version of ntopng you can easily perform an upgrade by doing the following commands:
 
 ```
-podman pull tusc/ntopng-udm:latest
+podman pull robertagbozo/ntopng-udm:latest
 podman stop ntopng
 podman rm ntopng
 podman run -d --net=host --restart always \
@@ -108,7 +114,7 @@ podman run -d --net=host --restart always \
    -v /mnt/data/ntopng/ntopng.conf:/etc/ntopng/ntopng.conf \
    -v /mnt/data/ntopng/redis.conf:/etc/redis/redis.conf \
    -v /mnt/data/ntopng/lib:/var/lib/ntopng \
-   docker.io/tusc/ntopng-udm:latest
+   docker.io/robertagbozo/ntopng-udm:latest
 ```
 
 # Uninstalling
