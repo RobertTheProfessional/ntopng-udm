@@ -18,6 +18,8 @@ RUN sed -i -e's/ main/ main contrib/g' /etc/apt/sources.list && \
             libhiredis0.14 \
             libssl1.0 \
             libmariadb3 \
+            libcap2-bin \
+            nmap \
             librdkafka1 \
             whiptail \
             libnuma1 \
